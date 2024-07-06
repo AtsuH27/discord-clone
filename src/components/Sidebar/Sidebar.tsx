@@ -5,9 +5,14 @@ import { IoMdAdd } from "react-icons/io";
 import SidebarChannel from './SidebarChannel';
 import { FaMicrophone,FaHeadphones } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
+import { auth } from '../../firebase';
+import { useAppSelector } from '../../app/hook';
 
 
 const Sidebar = () => {
+
+  const user=useAppSelector((state)=>state.user);
+
   return (
     <div className='sidebar'>
       {/*sidebarLeft*/}
@@ -42,10 +47,11 @@ const Sidebar = () => {
               </div>
               <div className='sidebarFooter'>
               <div className='sidebarAccount'>
-              <img src='./icon.png' alt=''/>
+                {/*authの状態を変更するとlogout出来る*/}
+              <img src={user?.photo} alt='' onClick={()=>auth.signOut()}/>
               <div className='accountName'>
-                <h4>atsuHironaka</h4>
-                <span>#8162</span>
+                <h4>{user?.displayName}</h4>
+                <span>#{user?.uid.substring(0,4)}</span>
                 
                 </div>
               </div>
