@@ -1,17 +1,34 @@
 import React from 'react'
 import'./ChatMessage.css'
 import { RxAvatar } from "react-icons/rx";
+import { Timestamp } from 'firebase/firestore';
 
-const ChatMessage = () => {
+type Props = {
+  timestamp:Timestamp;
+  message:string;
+  user:{
+    uid:string;
+    photo:string;
+    email:string;
+    displayName:string;
+  };
+};
+
+const ChatMessage = (props : Props) => {
+
+  const {message,timestamp,user} = props;
+  
   return (
     <div className='message'>
-      <RxAvatar/>
+      <img src={user?.photo}/>
       <div className='messageInfo'>
         <h4>
-            atsu Hironaka
-            <span className='messageTimestamp'>2024/07/01</span>
+            {user?.displayName}
+            <span className='messageTimestamp'>
+              {new Date(timestamp?.toDate()).toLocaleString()}
+            </span>
         </h4>
-        <p>メッセージ本文</p>
+        <p>{message}</p>
       </div>
     </div>
   )

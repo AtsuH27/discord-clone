@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer  from "../fuetures/userSlice";
+import channelReducer  from "../fuetures/ChannelSlice";
 
 export const store =configureStore({
-    reducer:userReducer,
+    reducer:{
+        user:userReducer,
+        channel:channelReducer,
+    },
 });
 
 export type AppDispatch = typeof store.dispatch;

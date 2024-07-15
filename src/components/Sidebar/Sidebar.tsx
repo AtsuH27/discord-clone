@@ -1,17 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./Sidebar.css";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import SidebarChannel from './SidebarChannel';
 import { FaMicrophone,FaHeadphones } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { useAppSelector } from '../../app/hook';
+import useCollection from '../../hooks/useCollection';
+import { addDoc, collection } from 'firebase/firestore';
+//import { collection, query } from 'firebase/firestore/lite';
 
 
 const Sidebar = () => {
 
-  const user=useAppSelector((state)=>state.user);
+  const user=useAppSelector((state)=>state.user.user);
+  const {documents:channels}=useCollection("channels");
+  const addChannel = async()=>{
+    const  channelName :string|null = prompt("新しいチャンネルを追加します。")
+    if(channelName){
+        await addDoc(collection(db,"channels"),{
+          channelName:channelName,
+        });
+    }
+  }
 
   return (
     <div className='sidebar'>
@@ -37,13 +49,16 @@ const Sidebar = () => {
                 <MdOutlineExpandMore/>
                 <h4>プログラミングチャンネル</h4>
               </div>
-              <IoMdAdd className='sidebarAddIcon'/>
+              <IoMdAdd className='sidebarAddIcon'onClick={()=>addChannel()}/>
             </div>
             <div className='sidebarChannelList'>
-              <SidebarChannel/>
-              <SidebarChannel/>
-              <SidebarChannel/>
-              <SidebarChannel/>
+              {channels.map((channel)=>(
+                <SidebarChannel 
+                  channel={channel} 
+                  id={channel.id}
+                  key={channel.id}
+                  />  
+              ))}
               </div>
               <div className='sidebarFooter'>
               <div className='sidebarAccount'>

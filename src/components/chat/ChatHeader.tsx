@@ -7,15 +7,23 @@ import { FaSearch } from "react-icons/fa";
 import { IoMdSend } from "react-icons/io";
 import { IoMdHelpCircle } from "react-icons/io";
 
+type Props={
+  channelName:string|null;
+}
 
-const ChatHeader = () => {
+
+const ChatHeader = (props:Props) => {
+
+    const {channelName}=props;
+
+
   return (
     <div className='chatHeader'>
       <div className='chatHeaderleft'>
         
             <h3>
                 <span className='chatHeaderHash'>#</span>
-                Udemy
+                {channelName}
             </h3>
         </div>
         <div className='chatHeaderRight'>
