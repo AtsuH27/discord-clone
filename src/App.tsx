@@ -7,6 +7,9 @@ import { useAppSelector } from './app/hook';
 import { auth } from './firebase';
 import { useDispatch } from 'react-redux';
 import { login, logout } from './fuetures/userSlice';
+import { ErrorBoundary } from 'react-error-boundary';
+import {ErrorFallBack}from './utils/ErrorFallBack';
+
 
 
 function App() {
@@ -16,7 +19,7 @@ function App() {
   //ユーザーの中身をuseSelectorでユーザー情報を取得できる。
 
 
-  const user=useAppSelector((state)=>state.user);
+  const user=useAppSelector((state)=>state.user.user);
   
   //console.log(user);
   const dispatch=useDispatch();
@@ -43,7 +46,10 @@ function App() {
     {user?
     (
       <>
-      <Sidebar/>
+      <ErrorBoundary FallbackComponent={ErrorFallBack}>
+        <Sidebar/>
+        </ErrorBoundary>
+      
       <Chat/>
       </>
     ):(
